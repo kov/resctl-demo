@@ -21,6 +21,9 @@ jobs:
         with:
           path: 'resctl-demo'
 
+      - name: Install musl toolchain
+        run: apt install -y musl-tools
+
       - name: Add arm64 musl target
         run: rustup target add aarch64-unknown-linux-musl
 
