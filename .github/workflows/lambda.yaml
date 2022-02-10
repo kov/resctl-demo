@@ -1,0 +1,28 @@
+name: Build and deploy lambda function
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    name: Build resctl-bench with lambda enabled
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - name: Checkout resctl-demo repository
+        uses: actions/checkout@v2
+        with:
+          path: 'resctl-demo'
+
+      - name: Add arm64 musl target
+        run: rustup target add aarch64-unknown-linux-musl
+
+      - name: Build
+        run: cd ${GITHUB_WORKSPACE}/resctl-demo && cargo build --release --bin resctl-bench --features lambda --target aarch64-unknown-linux-musl
