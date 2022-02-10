@@ -29,5 +29,5 @@ jobs:
 
       - name: Build
         run: cd ${GITHUB_WORKSPACE}/resctl-demo && \
-          env CC_aarch64_unknown_linux_musl=musl-gcc \
+          CC_aarch64_unknown_linux_musl=musl-gcc \
           cargo build --release --bin resctl-bench --features lambda --target aarch64-unknown-linux-musl
