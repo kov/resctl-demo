@@ -28,6 +28,7 @@ jobs:
         run: rustup target add aarch64-unknown-linux-musl
 
       - name: Build
+        env:
+          CC_aarch64_unknown_linux_musl: musl-gcc
         run: cd ${GITHUB_WORKSPACE}/resctl-demo && \
-          CC_aarch64_unknown_linux_musl=musl-gcc \
           cargo build --release --bin resctl-bench --features lambda --target aarch64-unknown-linux-musl
