@@ -59,5 +59,4 @@ jobs:
 
       - name: Update lambda function
         run: >
-          aws lambda update-function-code --function-name "iocost-submit"
-            --zip-file fileb://resctl-bench-lambda.zip
+          aws lambda update-function-code --function-name "iocost-submit" --zip-file fileb://resctl-bench-lambda.zip
