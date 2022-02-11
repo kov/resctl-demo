@@ -46,7 +46,7 @@ jobs:
           retention-days: 14
           if-no-files-found: error
           path: |
-            resctl-bench-lambda.zip
+            bootstrap
 
       - name: Prepare AWS environment
         uses: aws-actions/configure-aws-credentials@v1
