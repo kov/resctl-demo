@@ -33,3 +33,30 @@ jobs:
         run: >
           cd ${GITHUB_WORKSPACE}/resctl-demo &&
           cargo build --release --bin resctl-bench --features lambda --target x86_64-unknown-linux-musl
+
+      - name: Package
+        run: >
+          cp target/x86_64-unknown-linux-musl/release/resctl-bench ./bootstrap &&
+          zip -j rectl-bench-lambda.zip bootstrap
+
+      - name: Publish artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: resctl-bench-lambda
+          retention-days: 14
+          if-no-files-found: error
+          path: |
+            rectl-bench-lambda.zip
+
+      - name: Prepare AWS environment
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: IoCostLambdaManager
+          aws-region: eu-west-1
+
+      - name: Update lambda function
+        run: >
+          aws lambda update-function-code --function-name "iocost-submit"
+            --zip-file fileb://resctl-bench-lambda.zip
