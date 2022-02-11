@@ -36,7 +36,7 @@ jobs:
 
       - name: Package
         run: >
-          cp target/x86_64-unknown-linux-musl/release/resctl-bench ./bootstrap &&
+          cp resctl-demo/target/x86_64-unknown-linux-musl/release/resctl-bench ./bootstrap &&
           zip -j rectl-bench-lambda.zip bootstrap
 
       - name: Publish artifact
