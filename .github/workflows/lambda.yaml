@@ -8,9 +8,8 @@ jobs:
   upload-lambda-function:
     name: Build resctl-demo and upload the lambda function to AWS
     runs-on: ubuntu-latest
+    uses: ./.github/workflows/build.yaml
     steps:
-      - uses: ./.github/workflows/build.yaml
-
       - name: Package
         run: >
           cp resctl-demo/target/x86_64-unknown-linux-musl/release/resctl-bench ./bootstrap &&
