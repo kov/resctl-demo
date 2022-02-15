@@ -1,0 +1,34 @@
+name: Build and deploy lambda function
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    name: Build resctl-demo with all features enabled
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - name: Checkout resctl-demo repository
+        uses: actions/checkout@v2
+        with:
+          path: 'resctl-demo'
+
+      - name: Install musl toolchain
+        run: sudo apt install -y musl-tools
+
+      - name: Add musl target
+        run: rustup target add x86_64-unknown-linux-musl
+
+      - name: Build
+        env:
+          CC_x86_64_unknown_linux_musl: musl-gcc
+        run: >
+          cd ${GITHUB_WORKSPACE}/resctl-demo &&
+          cargo build --release --all-features --target x86_64-unknown-linux-musl
