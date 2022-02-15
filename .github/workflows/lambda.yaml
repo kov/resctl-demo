@@ -1,16 +1,14 @@
 name: Build and deploy lambda function
 
 on:
-  push:
-  pull_request:
+  workflow_dispatch:
 
 jobs:
   build-resctl-demo:
-    name: Build resctl-demo
-    uses: ./.github/workflows/build.yaml
+    uses: ./.github/workflows/build-base.yaml
 
   upload-lambda-function:
-    name: Build upload the lambda function to AWS
+    name: Upload the lambda function
     runs-on: ubuntu-latest
     needs: build-resctl-demo
     steps:
