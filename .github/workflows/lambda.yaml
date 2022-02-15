@@ -5,10 +5,14 @@ on:
   pull_request:
 
 jobs:
-  upload-lambda-function:
-    name: Build resctl-demo and upload the lambda function to AWS
-    runs-on: ubuntu-latest
+  build-resctl-demo:
+    name: Build resctl-demo
     uses: ./.github/workflows/build.yaml
+
+  upload-lambda-function:
+    name: Build upload the lambda function to AWS
+    runs-on: ubuntu-latest
+    needs: build-resctl-demo
     steps:
       - name: Package
         run: >
