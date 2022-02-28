@@ -173,8 +173,8 @@ impl IoCostSysSave {
 
 impl Drop for IoCostSysSave {
     fn drop(&mut self) {
-        if let Err(e) = self.write_to_sys() {
+        /*if let Err(e) = self.write_to_sys() {
             error!("Failed to restore io.cost.model,qos ({})", &e);
-        }
+        }*/
     }
 }

@@ -184,6 +184,24 @@ impl Program {
         }
     }
 
+    fn do_info(&self) {
+        let mut jctxs = JobCtxs::default();
+        std::mem::swap(&mut jctxs, &mut self.jobs.lock().unwrap());
+        for (i, jctx) in jctxs.vec.iter().enumerate() {
+            if let Some(sysrep) = &jctx.data.sysinfo.sysreqs_report {
+                if i > 0 {
+                    println!();
+                }
+
+                let spec_kind = &jctx.data.spec.kind;
+                println!("[{spec_kind}] Model: {}\n[{spec_kind}] Firmware version: {}\n[{spec_kind}] Benchmark version: {}",
+                    sysrep.scr_dev_model, sysrep.scr_dev_fwrev, jctx.data.sysinfo.bench_version
+                );
+            }
+        }
+
+    }
+
     fn do_format(&mut self, opts: &FormatOpts) {
         let specs = &self.args_file.data.job_specs;
         let empty_props = vec![Default::default()];
@@ -427,6 +445,7 @@ impl Program {
                 full: false,
                 rstat: 0,
             }),
+            Mode::Info => self.do_info(),
             #[cfg(feature = "lambda")]
             Mode::Lambda => lambda::run().unwrap(),
             Mode::Pack => self.do_pack().unwrap(),

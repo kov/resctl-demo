@@ -113,6 +113,7 @@ pub enum Mode {
     Solve,
     Format,
     Summary,
+    Info,
     #[cfg(feature = "lambda")]
     Lambda,
     Pack,
@@ -435,6 +436,12 @@ impl JsonArgs for Args {
                     .arg(job_file_arg.clone())
                     .arg(job_spec_arg.clone()),
             )
+            .subcommand(
+                clap::SubCommand::with_name("info")
+                    .about("Show basic information (model, bench version, specs) for benchmark results")
+                    .arg(job_file_arg.clone())
+                    .arg(job_spec_arg.clone()),
+            )
             .subcommand(clap::SubCommand::with_name("pack").about(
                 "Create a tarball containing the result file and the associated report files",
             ))
@@ -624,6 +631,7 @@ impl JsonArgs for Args {
             ("solve", Some(subm)) => self.process_subcommand(Mode::Solve, subm),
             ("format", Some(subm)) => self.process_subcommand(Mode::Format, subm),
             ("summary", Some(subm)) => self.process_subcommand(Mode::Summary, subm),
+            ("info", Some(subm)) => self.process_subcommand(Mode::Info, subm),
             #[cfg(feature = "lambda")]
             ("lambda", Some(subm)) => self.process_subcommand(Mode::Lambda, subm),
             ("pack", Some(_subm)) => {
